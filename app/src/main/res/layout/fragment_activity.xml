@@ -36,30 +36,21 @@
                 android:tint="@color/text_primary" />
         </LinearLayout>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/textViewActivityStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="26dp"
-            android:background="@drawable/bg_message_card"
-            android:orientation="vertical"
-            android:padding="22dp">
+            android:text="No recent activity. Friend requests and due reminders will appear here."
+            android:textColor="@color/text_secondary"
+            android:textSize="15sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No recent activity"
-                android:textColor="@color/text_primary"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="When you create expenses, payment reminders and updates will appear here."
-                android:textColor="@color/text_secondary"
-                android:textSize="15sp" />
-        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layoutActivityContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical" />
     </LinearLayout>
 
     <Button

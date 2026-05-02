@@ -101,12 +101,20 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/textViewExpensesStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="No expenses added yet. Use the button below to start tracking shared costs."
             android:textColor="@color/text_secondary"
             android:textSize="15sp" />
+
+        <LinearLayout
+            android:id="@+id/layoutExpensesContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical" />
 
         <Button
             android:id="@+id/buttonAddExpenseFromGroup"

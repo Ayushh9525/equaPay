@@ -43,6 +43,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/textViewProfileName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Jod Ayush"
@@ -51,17 +52,30 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/textViewProfileEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="jodayush2005@gmail.com"
                     android:textColor="@color/text_muted"
                     android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/textViewProfileUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Username: loading..."
+                    android:textColor="@color/accent_green"
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <TextView
+                android:id="@+id/textViewEditProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
                 android:text="Edit"
                 android:textColor="@color/accent_green"
                 android:textSize="16sp" />

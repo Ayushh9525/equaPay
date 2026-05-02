@@ -48,29 +48,67 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Add your classmates, roommates, and travel partners here before creating group splits."
+            android:text="Search for people by email, exact name, or Firebase user id and add them before creating group splits."
             android:textColor="@color/text_secondary"
             android:textSize="18sp" />
 
-        <TextView
+        <EditText
+            android:id="@+id/editTextFriendSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:text="After adding friends, you can include them in groups, assign expense shares, and send reminders for pending contributions."
-            android:textColor="@color/text_muted"
-            android:textSize="16sp" />
+            android:backgroundTint="@color/accent_green"
+            android:hint="Enter email, name, or user id"
+            android:inputType="textEmailAddress"
+            android:padding="14dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_muted" />
 
         <Button
+            android:id="@+id/buttonSearchFriend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_outline_button"
             android:paddingHorizontal="18dp"
             android:paddingVertical="12dp"
-            android:text="Add more friends"
+            android:text="Search friend"
             android:textAllCaps="false"
             android:textColor="@color/accent_green"
             android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textViewFriendStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="Search results and your saved friends will appear below."
+            android:textColor="@color/text_secondary"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:id="@+id/layoutFriendSearchResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/textViewFriendsHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:text="Your friends"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/layoutFriendsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical" />
     </LinearLayout>
 
 </ScrollView>

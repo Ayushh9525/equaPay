@@ -21,6 +21,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private EditText editTextName;
     private EditText editTextEmail;
+    private EditText editTextUsername;
     private EditText editTextPassword;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firestore;
@@ -36,6 +37,7 @@ public class SignupActivity extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         editTextName = findViewById(R.id.editTextSignupName);
         editTextEmail = findViewById(R.id.editTextSignupEmail);
+        editTextUsername = findViewById(R.id.editTextSignupUsername);
         editTextPassword = findViewById(R.id.editTextSignupPassword);
         buttonSignup = findViewById(R.id.buttonSignup);
         textViewSignupStatus = findViewById(R.id.textViewSignupStatus);
@@ -49,6 +51,7 @@ public class SignupActivity extends AppCompatActivity {
     private void createAccount() {
         String name = editTextName.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
+        String username = editTextUsername.getText().toString().trim().toLowerCase();
         String password = editTextPassword.getText().toString().trim();
         textViewSignupStatus.setVisibility(View.GONE);
 
@@ -70,6 +73,18 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
+        if (username.isEmpty()) {
+            editTextUsername.setError("Enter a username");
+            editTextUsername.requestFocus();
+            return;
+        }
+
+        if (username.length() < 4) {
+            editTextUsername.setError("Username must be at least 4 characters");
+            editTextUsername.requestFocus();
+            return;
+        }
+
         if (password.isEmpty()) {
             editTextPassword.setError("Enter your password");
             editTextPassword.requestFocus();
@@ -85,28 +100,49 @@ public class SignupActivity extends AppCompatActivity {
         buttonSignup.setEnabled(false);
         buttonSignup.setText("Creating account...");
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful() && firebaseAuth.getCurrentUser() != null) {
-                        String userId = firebaseAuth.getCurrentUser().getUid();
-                        saveUserToFirestore(userId, name, email);
-                    } else {
+        firestore.collection("users")
+                .whereEqualTo("username", username)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
                         buttonSignup.setEnabled(true);
                         buttonSignup.setText("Sign Up");
-                        String errorMessage = task.getException() != null
-                                ? task.getException().getMessage()
-                                : "Signup failed";
-                        textViewSignupStatus.setText(errorMessage);
+                        textViewSignupStatus.setText("Username already taken. Try another one.");
                         textViewSignupStatus.setVisibility(View.VISIBLE);
-                        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+                        return;
                     }
+
+                    firebaseAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(this, task -> {
+                                if (task.isSuccessful() && firebaseAuth.getCurrentUser() != null) {
+                                    String userId = firebaseAuth.getCurrentUser().getUid();
+                                    saveUserToFirestore(userId, name, email, username);
+                                } else {
+                                    buttonSignup.setEnabled(true);
+                                    buttonSignup.setText("Sign Up");
+                                    String errorMessage = task.getException() != null
+                                            ? task.getException().getMessage()
+                                            : "Signup failed";
+                                    textViewSignupStatus.setText(errorMessage);
+                                    textViewSignupStatus.setVisibility(View.VISIBLE);
+                                    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+                                }
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    buttonSignup.setEnabled(true);
+                    buttonSignup.setText("Sign Up");
+                    textViewSignupStatus.setText("Failed to verify username: " + e.getMessage());
+                    textViewSignupStatus.setVisibility(View.VISIBLE);
                 });
     }
 
-    private void saveUserToFirestore(String userId, String name, String email) {
+    private void saveUserToFirestore(String userId, String name, String email, String username) {
         Map<String, Object> userMap = new HashMap<>();
+        userMap.put("uid", userId);
         userMap.put("name", name);
         userMap.put("email", email);
+        userMap.put("username", username);
         userMap.put("createdAt", System.currentTimeMillis());
 
         firestore.collection("users")

@@ -15,6 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddExpenseActivity"
+            android:exported="false" />
+        <activity
             android:name=".GroupDetailsActivity"
             android:exported="false" />
         <activity
