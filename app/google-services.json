@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "473916850738",
+    "project_id": "equapay-85893",
+    "storage_bucket": "equapay-85893.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473916850738:android:c6cd9a811a5d0fb5b7f22b",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvkePj0btWfbrPbwtdp6cixGJ9RzNcN4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
