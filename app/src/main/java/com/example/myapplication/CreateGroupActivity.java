@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -82,10 +83,26 @@ public class CreateGroupActivity extends AppCompatActivity {
         firestore.collection("groups")
                 .add(groupMap)
                 .addOnSuccessListener(documentReference -> {
-                    buttonCreateGroup.setEnabled(true);
-                    buttonCreateGroup.setText("Create Group");
-                    Toast.makeText(this, "Group created successfully", Toast.LENGTH_SHORT).show();
-                    finish();
+                    Map<String, Object> memberMap = new HashMap<>();
+                    memberMap.put("userId", currentUser.getUid());
+                    memberMap.put("name", currentUser.getEmail() != null ? currentUser.getEmail() : "You");
+                    memberMap.put("email", currentUser.getEmail());
+                    memberMap.put("addedAt", System.currentTimeMillis());
+
+                    documentReference.collection("members")
+                            .document(currentUser.getUid())
+                            .set(memberMap)
+                            .addOnSuccessListener(unused -> {
+                                buttonCreateGroup.setEnabled(true);
+                                buttonCreateGroup.setText("Create Group");
+                                Toast.makeText(this, "Group created successfully", Toast.LENGTH_SHORT).show();
+                                finish();
+                            })
+                            .addOnFailureListener(e -> {
+                                buttonCreateGroup.setEnabled(true);
+                                buttonCreateGroup.setText("Create Group");
+                                showError("Group created, but member setup failed: " + e.getMessage());
+                            });
                 })
                 .addOnFailureListener(e -> {
                     buttonCreateGroup.setEnabled(true);

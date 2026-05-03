@@ -89,6 +89,60 @@
             android:textColor="@color/text_secondary"
             android:textSize="16sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_message_card"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Your Balance Summary"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewSummaryOwe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="You owe: Rs 0.00"
+                android:textColor="@color/accent_red"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textViewSummaryReceive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="You should receive: Rs 0.00"
+                android:textColor="@color/accent_green"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textViewSummaryNet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Net balance: Rs 0.00"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewSummaryStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Loading balance summary..."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,24 +159,33 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textViewEmailSettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
                 android:paddingVertical="10dp"
                 android:text="Email settings"
                 android:textColor="@color/text_primary"
                 android:textSize="22sp" />
 
             <TextView
+                android:id="@+id/textViewNotificationSettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
                 android:paddingVertical="10dp"
                 android:text="Notifications"
                 android:textColor="@color/text_primary"
                 android:textSize="22sp" />
 
             <TextView
+                android:id="@+id/textViewSecuritySettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
                 android:paddingVertical="10dp"
                 android:text="Security"
                 android:textColor="@color/text_primary"

@@ -343,7 +343,9 @@ public class FriendsFragment extends Fragment {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         String friendName = document.getString("friendName");
                         String friendEmail = document.getString("friendEmail");
+                        String friendId = document.getString("friendId");
                         addFriendCard(
+                                friendId != null ? friendId : document.getId(),
                                 friendName != null ? friendName : "Unknown friend",
                                 friendEmail != null ? friendEmail : "No email"
                         );
@@ -367,7 +369,7 @@ public class FriendsFragment extends Fragment {
         layoutFriendsContainer.addView(emptyTextView);
     }
 
-    private void addFriendCard(String friendName, String friendEmail) {
+    private void addFriendCard(String friendId, String friendName, String friendEmail) {
         if (getContext() == null) {
             return;
         }
@@ -402,9 +404,58 @@ public class FriendsFragment extends Fragment {
         emailParams.topMargin = dpToPx(8);
         emailTextView.setLayoutParams(emailParams);
 
+        Button removeFriendButton = new Button(getContext());
+        removeFriendButton.setText("Remove Friend");
+        removeFriendButton.setBackgroundTintList(getResources().getColorStateList(R.color.accent_red, null));
+        removeFriendButton.setTextColor(getResources().getColor(R.color.white, null));
+        LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        buttonParams.topMargin = dpToPx(12);
+        removeFriendButton.setLayoutParams(buttonParams);
+        removeFriendButton.setOnClickListener(v -> removeFriend(friendId, removeFriendButton));
+
         cardLayout.addView(nameTextView);
         cardLayout.addView(emailTextView);
+        cardLayout.addView(removeFriendButton);
         layoutFriendsContainer.addView(cardLayout);
+    }
+
+    private void removeFriend(String friendId, Button removeFriendButton) {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser == null) {
+            textViewFriendStatus.setText("Please log in again to remove friends.");
+            return;
+        }
+
+        removeFriendButton.setEnabled(false);
+        removeFriendButton.setText("Removing...");
+
+        WriteBatch batch = firestore.batch();
+        batch.delete(
+                firestore.collection("users")
+                        .document(currentUser.getUid())
+                        .collection("friends")
+                        .document(friendId)
+        );
+        batch.delete(
+                firestore.collection("users")
+                        .document(friendId)
+                        .collection("friends")
+                        .document(currentUser.getUid())
+        );
+
+        batch.commit()
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(getContext(), "Friend removed", Toast.LENGTH_SHORT).show();
+                    loadFriends();
+                })
+                .addOnFailureListener(e -> {
+                    removeFriendButton.setEnabled(true);
+                    removeFriendButton.setText("Remove Friend");
+                    textViewFriendStatus.setText("Failed to remove friend: " + e.getMessage());
+                });
     }
 
     private int dpToPx(int dp) {
